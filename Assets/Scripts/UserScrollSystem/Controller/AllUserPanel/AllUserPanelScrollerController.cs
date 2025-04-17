@@ -85,7 +85,7 @@ namespace ScrollSystem.Controller
 
         /// <summary>
         /// My Custom Users Parse callback
-        /// It is for the 
+        /// It is for the both list and single class parse
         /// </summary>
         /// <param name="rawJson"></param>
         /// <returns></returns>

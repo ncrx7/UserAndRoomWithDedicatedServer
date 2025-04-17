@@ -35,6 +35,7 @@ namespace UI
         [SerializeField] private TMP_InputField _userNameInputField;
         [SerializeField] private Button _returnFromJoinPanelButton;
         [SerializeField] private Button _refreshServerListButton;
+        [SerializeField] private Button _returnFromGameRoomPanelButton;
 
         protected override void Awake()
         {
@@ -171,6 +172,8 @@ namespace UI
 
             _joinServerButton.onClick.AddListener(() => GameEventSystem.OnClickJoinServerButton?.Invoke(_userNameInputField.text));
             _returnFromJoinPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.Game));
+
+            _returnFromGameRoomPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.GameRoomPanel));
         }
 
         private void OpenPanel(PanelType type)

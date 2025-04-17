@@ -9,27 +9,31 @@ using Network.ServerClient.Model;
 using GameEvents;
 using Newtonsoft.Json;
 using Cysharp.Threading.Tasks;
+using UnityUtils.BaseClasses;
 
 namespace Network.ServerClient.Controller
 {
-    public class NetworkClientManager : MonoBehaviour
+    public class NetworkClientManager : SingletonBehavior<NetworkClientManager>
     {
         public string serverUrl = "http://localhost:3000";
-        public TextMeshProUGUI playerListText;
-
+ 
         private SocketIOUnity socket;
         private bool isConnected = false;
 
         [SerializeField] private Player[] _players;
 
+        public Player[] GetPlayers => _players;
+
         private void OnEnable()
         {
             GameEventSystem.OnClickJoinServerButton += JoinServerByName;
+            GameEventSystem.OnClickReturnMainMenuButton += (args) => DisconnectFromServer();
         }
 
         private void OnDisable()
         {
             GameEventSystem.OnClickJoinServerButton -= JoinServerByName;
+            GameEventSystem.OnClickReturnMainMenuButton -= (args) => DisconnectFromServer();
         }
 
         public async void JoinServerByName(string userName)
@@ -110,11 +114,15 @@ namespace Network.ServerClient.Controller
 
         private void UpdatePlayerList(Player[] players)
         {
-            playerListText.text = "Players:\n";
-            foreach (var p in players)
-            {
-                playerListText.text += $"- {p.id}\n";
-            }
+            
+        }
+
+        private void DisconnectFromServer()
+        {
+            if (!isConnected)
+                return;
+            
+            socket.Disconnect();
         }
     }
 }
