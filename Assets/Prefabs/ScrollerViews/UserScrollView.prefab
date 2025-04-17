@@ -228,6 +228,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellIdentifier: User Cell View
   userNameText: {fileID: 2824045674502455708}
+  cityLivedText: {fileID: 5719606841938815053}
+  orderIdText: {fileID: 4777657141531406765}
 --- !u!1 &6496247430243737819
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,10 +471,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6051882245193021177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.164, y: 0.8602904}
-  m_AnchorMax: {x: 0.164, y: 0.8602904}
-  m_AnchoredPosition: {x: 7, y: -2}
-  m_SizeDelta: {x: 194.0155, y: 40}
+  m_AnchorMin: {x: 0.06258455, y: 0.84000003}
+  m_AnchorMax: {x: 0.28716907, y: 0.8602904}
+  m_AnchoredPosition: {x: -2, y: 2}
+  m_SizeDelta: {x: 8.015503, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4126514515786450115
 CanvasRenderer:
@@ -529,12 +531,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.56
+  m_fontSize: 30.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 34.56
+  m_fontSizeMax: 30.3
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
