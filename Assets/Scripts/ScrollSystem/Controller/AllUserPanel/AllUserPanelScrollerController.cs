@@ -14,10 +14,15 @@ namespace ScrollSystem.Controller
 {
     public class AllUserPanelScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     {
-        [SerializeField] private string _url;
-        private List<UserScrollerData> _userData;
+        [Header("References")]
         public EnhancedScroller myScroller;
         public UserCellView userCellViewPrefab;
+
+        [Header("Variable")]
+        [SerializeField] private string _url;
+        [SerializeField] private float _cellViewSize;
+
+        private List<UserScrollerData> _userData;
 
         async void Start()
         {
@@ -50,7 +55,7 @@ namespace ScrollSystem.Controller
 
         public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
         {
-            return 100f;
+            return _cellViewSize;
         }
 
         public int GetNumberOfCells(EnhancedScroller scroller)

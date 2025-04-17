@@ -1097,7 +1097,7 @@ GameObject:
   - component: {fileID: 797426823}
   - component: {fileID: 797426824}
   m_Layer: 0
-  m_Name: ScrollController
+  m_Name: AllUserScrollController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1130,10 +1130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68807e365110a1149870e8aba3b134fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _url: https://jsonplaceholder.typicode.com/users
   myScroller: {fileID: 1523728227}
   userCellViewPrefab: {fileID: 370265143680166948, guid: e4eeea8615ad74144857b4ebbc8c9136,
     type: 3}
+  _url: https://jsonplaceholder.typicode.com/users
+  _cellViewSize: 250
 --- !u!1 &830748554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,6 +2839,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UsersContainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981813057060570684, guid: 62d2acac3c79e104e8b2b34643cb52c1,
+        type: 3}
+      propertyPath: spacing
+      value: 78
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981813057060570684, guid: 62d2acac3c79e104e8b2b34643cb52c1,
+        type: 3}
+      propertyPath: snapping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981813057060570684, guid: 62d2acac3c79e104e8b2b34643cb52c1,
+        type: 3}
+      propertyPath: scrollDirection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981813057060570684, guid: 62d2acac3c79e104e8b2b34643cb52c1,
+        type: 3}
+      propertyPath: snapUseCellSpacing
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
