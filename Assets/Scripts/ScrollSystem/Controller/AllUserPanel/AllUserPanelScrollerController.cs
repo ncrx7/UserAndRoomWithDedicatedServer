@@ -1,5 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using API.Controller;
+using API.Model;
+using BaseModelData.User;
 using EnhancedUI.EnhancedScroller;
 using ScrollSystem.Model;
 using ScrollSystem.View;
@@ -7,27 +12,30 @@ using UnityEngine;
 
 namespace ScrollSystem.Controller
 {
-    public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
+    public class AllUserPanelScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     {
+        [SerializeField] private string _url;
         private List<UserScrollerData> _userData;
         public EnhancedScroller myScroller;
         public UserCellView userCellViewPrefab;
 
-        void Start()
+        async void Start()
         {
-            _userData = new List<UserScrollerData>();
-            _userData.Add(new UserScrollerData() { Name = "Lion" });
-            _userData.Add(new UserScrollerData() { Name = "Bear" });
-            _userData.Add(new UserScrollerData() { Name = "Eagle" });
-            _userData.Add(new UserScrollerData() { Name = "Dolphin" });
-            _userData.Add(new UserScrollerData() { Name = "Ant" });
-            _userData.Add(new UserScrollerData() { Name = "Cat" });
-            _userData.Add(new UserScrollerData() { Name = "Sparrow" });
-            _userData.Add(new UserScrollerData() { Name = "Dog" });
-            _userData.Add(new UserScrollerData() { Name = "Spider" });
-            _userData.Add(new UserScrollerData() { Name = "Elephant" });
-            _userData.Add(new UserScrollerData() { Name = "Falcon" });
-            _userData.Add(new UserScrollerData() { Name = "Mouse" });
+            ApiResult<List<UserScrollerData>> responseResult = await ApiHandler.GetApiResponse<List<UserScrollerData>>(_url, ParseUserScrollerList);
+
+            if (!responseResult.CheckAnyResponseError())
+            {
+                //TODO: SUCCES UI
+            }
+            else
+            {
+                Debug.LogError(responseResult.ResponseErrorMessage);
+                //TODO: Error UI Panel
+            }
+
+
+            _userData = responseResult.ResponseData;
+
             myScroller.Delegate = this;
             myScroller.ReloadData();
         }
@@ -48,6 +56,31 @@ namespace ScrollSystem.Controller
         public int GetNumberOfCells(EnhancedScroller scroller)
         {
             return _userData.Count;
+        }
+
+        /// <summary>
+        /// My Custom Users Parse callback
+        /// It is for the 
+        /// </summary>
+        /// <param name="rawJson"></param>
+        /// <returns></returns>
+        private List<UserScrollerData> ParseUserScrollerList(string rawJson)
+        {
+            string wrappedJson = "{ \"Users\": " + rawJson + " }";
+            var wrapper = JsonUtility.FromJson<UserRawModelWrapper>(wrappedJson);
+            var userScrollerList = new List<UserScrollerData>();
+
+            foreach (var user in wrapper.Users)
+            {
+                userScrollerList.Add(new UserScrollerData
+                {
+                    OrderId = user.id,
+                    Name = user.name,
+                    CityLive = user.address?.city ?? "Unknown"
+                });
+            }
+
+            return userScrollerList;
         }
     }
 }

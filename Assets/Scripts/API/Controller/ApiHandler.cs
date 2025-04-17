@@ -18,7 +18,7 @@ namespace API.Controller
         /// If returned response data is a collection, we can call a custom callback to parse this collection. 
         /// If returnes response data is a single data, it will match to data directly.
         /// </summary>
-        public static async Task<ApiResult<T>> GetApiResponse<T>(string url, Func<string, T> customParser = null)
+        public static async UniTask<ApiResult<T>> GetApiResponse<T>(string url, Func<string, T> customParser = null)
         {
             ApiResult<T> result = new ApiResult<T>();
 
@@ -43,7 +43,7 @@ namespace API.Controller
                             if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
                             {
                                 Type itemType = typeof(T).GetGenericArguments()[0];
-                                string wrappedJson = "{ \"Items\": " + rawJson + " }";
+                                string wrappedJson = "{ \"Users\": " + rawJson + " }";
                                 var wrapperType = typeof(ApiWrapper<>).MakeGenericType(itemType);
                                 object wrapperObj = JsonUtility.FromJson(wrappedJson, wrapperType);
                                 result.ResponseData = (T)wrapperType.GetField("Items").GetValue(wrapperObj);

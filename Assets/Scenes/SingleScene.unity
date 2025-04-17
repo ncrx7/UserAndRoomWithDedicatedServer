@@ -1130,6 +1130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68807e365110a1149870e8aba3b134fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _url: https://jsonplaceholder.typicode.com/users
   myScroller: {fileID: 1523728227}
   userCellViewPrefab: {fileID: 370265143680166948, guid: e4eeea8615ad74144857b4ebbc8c9136,
     type: 3}
