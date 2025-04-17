@@ -10,19 +10,21 @@ namespace UI
 {
     public class UIManager : BaseUIManager
     {
-        [Header("Panels")]
+        [Header("Base Panels")]
         [SerializeField] private GameObject _loadingPanel;
         [SerializeField] private GameObject _mainMenuPanel;
         [SerializeField] private GameObject _allUserPanel;
 
-        [Header("Main Menu Buttons")]
+        [Header("Main Menu References")]
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _displayAllUserButton;
         [SerializeField] private Button _quitButton;
 
-        [Header("All User Panel Buttons")]
+        [Header("All User Panel References")]
         [SerializeField] private Button _returnFromUserPanelButton;
         [SerializeField] private Button _refreshUserPanelButton;
+        [SerializeField] private GameObject _userLoadingPanel;
+        [SerializeField] private GameObject _usersContainerPanel;
 
         protected override void Awake()
         {
@@ -62,12 +64,24 @@ namespace UI
 
             GameEventSystem.OnGameDataLoadingStart += () =>
             {
-                OpenPanel(PanelType.Loading);
+                OpenPanel(PanelType.LoadingFullScreen);
             };
 
             GameEventSystem.OnGameDataLoadingEnd += () =>
             {
-                ClosePanel(PanelType.Loading);
+                ClosePanel(PanelType.LoadingFullScreen);
+            };
+
+            GameEventSystem.OnAllUserDataLoadingStart += () =>
+            {
+                ClosePanel(PanelType.UsersContainer);
+                OpenPanel(PanelType.LoadingAllUser);
+            };
+
+            GameEventSystem.OnAllUserDataLoadingEnd += () =>
+            {
+                ClosePanel(PanelType.LoadingAllUser);
+                OpenPanel(PanelType.UsersContainer);
             };
         }
 
@@ -89,12 +103,24 @@ namespace UI
 
             GameEventSystem.OnGameDataLoadingStart -= () =>
             {
-                OpenPanel(PanelType.Loading);
+                OpenPanel(PanelType.LoadingFullScreen);
             };
 
             GameEventSystem.OnGameDataLoadingEnd -= () =>
             {
-                ClosePanel(PanelType.Loading);
+                ClosePanel(PanelType.LoadingFullScreen);
+            };
+
+            GameEventSystem.OnAllUserDataLoadingStart -= () =>
+            {
+                ClosePanel(PanelType.UsersContainer);
+                OpenPanel(PanelType.LoadingAllUser);
+            };
+
+            GameEventSystem.OnAllUserDataLoadingEnd -= () =>
+            {
+                ClosePanel(PanelType.LoadingAllUser);
+                OpenPanel(PanelType.UsersContainer);
             };
         }
 
@@ -119,8 +145,14 @@ namespace UI
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _allUserPanel);
                     break;
-                case PanelType.Loading:
+                case PanelType.LoadingFullScreen:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _loadingPanel);
+                    break;
+                case PanelType.LoadingAllUser:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _userLoadingPanel);
+                    break;
+                case PanelType.UsersContainer:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _usersContainerPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");
@@ -141,8 +173,14 @@ namespace UI
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _allUserPanel);
                     break;
-                case PanelType.Loading:
+                case PanelType.LoadingFullScreen:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _loadingPanel);
+                    break;
+                case PanelType.LoadingAllUser:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _userLoadingPanel);
+                    break;
+                case PanelType.UsersContainer:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _usersContainerPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");

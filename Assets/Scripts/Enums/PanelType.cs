@@ -5,6 +5,8 @@ namespace Enums
         Game,
         AllUser,
         MainMenu,
-        Loading
+        LoadingFullScreen,
+        LoadingAllUser,
+        UsersContainer
     }
 }

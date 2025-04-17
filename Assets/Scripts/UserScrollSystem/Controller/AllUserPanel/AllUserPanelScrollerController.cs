@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Controller;
 using API.Model;
 using BaseModelData.User;
+using Cysharp.Threading.Tasks;
 using EnhancedUI.EnhancedScroller;
 using GameEvents;
 using ScrollSystem.Model;
@@ -39,6 +40,10 @@ namespace ScrollSystem.Controller
 
         private async void PopulateAllUserPanel()
         {
+            GameEventSystem.OnAllUserDataLoadingStart?.Invoke();
+
+            await UniTask.Delay(700); //I am waited in purpose, because I want to display user loading panel
+
             ApiResult<List<UserScrollerData>> responseResult = await ApiHandler.GetApiResponse<List<UserScrollerData>>(_url, ParseUserScrollerList);
 
             if (!responseResult.CheckAnyResponseError())
@@ -56,6 +61,8 @@ namespace ScrollSystem.Controller
 
             myScroller.Delegate = this;
             myScroller.ReloadData();
+
+            GameEventSystem.OnAllUserDataLoadingEnd?.Invoke();
         }
 
 

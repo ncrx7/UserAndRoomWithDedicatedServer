@@ -9,10 +9,13 @@ namespace GameEvents
         public static Action OnGameDataLoadingStart;
         public static Action OnGameDataLoadingEnd;
 
+        public static Action OnAllUserDataLoadingStart;
+        public static Action OnAllUserDataLoadingEnd;
+
         public static Action OnDisplayAllUserPanel;
 
         #region Button Events
-        // MAIN MENU BUTTON EVENTS
+        // MAIN MENU PANEL BUTTON EVENTS
         public static Action OnClickAllUserButton;
 
         // USER PANEL BUTTON EVENTS
