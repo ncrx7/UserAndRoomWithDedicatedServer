@@ -24,7 +24,8 @@ namespace ScrollSystem.Controller
 
         private List<UserScrollerData> _userData;
 
-        async void Start()
+       
+        private async void PopulateAllUserPanel()
         {
             ApiResult<List<UserScrollerData>> responseResult = await ApiHandler.GetApiResponse<List<UserScrollerData>>(_url, ParseUserScrollerList);
 
