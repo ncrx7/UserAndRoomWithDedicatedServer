@@ -14,7 +14,7 @@ namespace UnityUtils.BaseClasses
 
         protected virtual void Awake()
         {
-            AddUIAction<bool, GameObject>(UIActionType.SetMainMenuLoadingPanel, (active, panel) => panel.SetActive(active));
+            AddUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, (active, panel) => panel.SetActive(active));
 
             AddUIAction<string, TextMeshProUGUI>(UIActionType.SetText, (textString, textObject) => textObject.text = textString);
 

@@ -3,7 +3,7 @@ namespace Enums
 {
     public enum UIActionType
     {
-        SetMainMenuLoadingPanel,
+        SetPanelDisplay,
         SetText,
         SetSlider,
         SetImage

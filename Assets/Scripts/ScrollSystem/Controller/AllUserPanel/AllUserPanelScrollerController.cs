@@ -6,6 +6,7 @@ using API.Controller;
 using API.Model;
 using BaseModelData.User;
 using EnhancedUI.EnhancedScroller;
+using GameEvents;
 using ScrollSystem.Model;
 using ScrollSystem.View;
 using UnityEngine;
@@ -24,7 +25,16 @@ namespace ScrollSystem.Controller
 
         private List<UserScrollerData> _userData;
 
-       
+        private void OnEnable()
+        {
+            GameEventSystem.OnDisplayAllUserPanel += PopulateAllUserPanel;
+        }
+
+        private void OnDisable()
+        {
+            GameEventSystem.OnDisplayAllUserPanel -= PopulateAllUserPanel;
+        }
+
         private async void PopulateAllUserPanel()
         {
             ApiResult<List<UserScrollerData>> responseResult = await ApiHandler.GetApiResponse<List<UserScrollerData>>(_url, ParseUserScrollerList);
