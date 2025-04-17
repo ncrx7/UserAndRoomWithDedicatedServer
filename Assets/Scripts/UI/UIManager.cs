@@ -20,7 +20,7 @@ namespace UI
 
         [Header("All User Panel Buttons")]
         [SerializeField] private Button _returnFromUserPanelButton;
-        [SerializeField] private Button _refreshPanelButton;
+        [SerializeField] private Button _refreshUserPanelButton;
 
         protected override void Awake()
         {
@@ -70,6 +70,7 @@ namespace UI
         {
             _displayAllUserButton.onClick.AddListener(() => GameEventSystem.OnClickAllUserButton?.Invoke());
             _returnFromUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.AllUser));
+            _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
         }
 
         private void OpenPanel(PanelType type)

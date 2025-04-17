@@ -28,11 +28,13 @@ namespace ScrollSystem.Controller
         private void OnEnable()
         {
             GameEventSystem.OnDisplayAllUserPanel += PopulateAllUserPanel;
+            GameEventSystem.OnClickRefreshUserPanelButton += PopulateAllUserPanel;
         }
 
         private void OnDisable()
         {
             GameEventSystem.OnDisplayAllUserPanel -= PopulateAllUserPanel;
+            GameEventSystem.OnClickRefreshUserPanelButton -= PopulateAllUserPanel;
         }
 
         private async void PopulateAllUserPanel()
