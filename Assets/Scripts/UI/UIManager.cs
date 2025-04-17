@@ -170,7 +170,6 @@ namespace UI
             _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
 
             _joinServerButton.onClick.AddListener(() => GameEventSystem.OnClickJoinServerButton?.Invoke(_userNameInputField.text));
-
             _returnFromJoinPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.Game));
         }
 
