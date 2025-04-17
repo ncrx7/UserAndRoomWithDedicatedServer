@@ -11,6 +11,7 @@ namespace UI
     public class UIManager : BaseUIManager
     {
         [Header("Panels")]
+        [SerializeField] private GameObject _loadingPanel;
         [SerializeField] private GameObject _mainMenuPanel;
         [SerializeField] private GameObject _allUserPanel;
 
@@ -30,6 +31,21 @@ namespace UI
 
         private void OnEnable()
         {
+            BindGameEvents();
+        }
+
+        private void OnDisable()
+        {
+            RemoveGameEvents();
+        }
+
+        private void Start()
+        {
+            BindButtonEvents();
+        }
+
+        private void BindGameEvents()
+        {
             GameEventSystem.OnClickAllUserButton += () =>
             {
                 OpenPanel(PanelType.AllUser);
@@ -43,15 +59,25 @@ namespace UI
                 ClosePanel(currentPanelType);
                 OpenPanel(PanelType.MainMenu);
             };
+
+            GameEventSystem.OnGameDataLoadingStart += () =>
+            {
+                OpenPanel(PanelType.Loading);
+            };
+
+            GameEventSystem.OnGameDataLoadingEnd += () =>
+            {
+                ClosePanel(PanelType.Loading);
+            };
         }
 
-        private void OnDisable()
+        private void RemoveGameEvents()
         {
             GameEventSystem.OnClickAllUserButton -= () =>
             {
                 OpenPanel(PanelType.AllUser);
                 ClosePanel(PanelType.MainMenu);
-                
+
                 GameEventSystem.OnDisplayAllUserPanel?.Invoke();
             };
 
@@ -60,11 +86,16 @@ namespace UI
                 ClosePanel(currentPanelType);
                 OpenPanel(PanelType.MainMenu);
             };
-        }
 
-        private void Start()
-        {
-            BindButtonEvents();
+            GameEventSystem.OnGameDataLoadingStart -= () =>
+            {
+                OpenPanel(PanelType.Loading);
+            };
+
+            GameEventSystem.OnGameDataLoadingEnd -= () =>
+            {
+                ClosePanel(PanelType.Loading);
+            };
         }
 
         private void BindButtonEvents()
@@ -83,10 +114,13 @@ namespace UI
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _mainMenuPanel);
                     break;
                 case PanelType.Game:
-                    
+
                     break;
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _allUserPanel);
+                    break;
+                case PanelType.Loading:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _loadingPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");
@@ -102,10 +136,13 @@ namespace UI
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _mainMenuPanel);
                     break;
                 case PanelType.Game:
-                    
+
                     break;
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _allUserPanel);
+                    break;
+                case PanelType.Loading:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _loadingPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");

@@ -4,6 +4,7 @@ namespace Enums
     {
         Game,
         AllUser,
-        MainMenu
+        MainMenu,
+        Loading
     }
 }
