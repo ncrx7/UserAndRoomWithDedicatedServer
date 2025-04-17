@@ -17,6 +17,7 @@ namespace UI
         [Header("Main Menu Buttons")]
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _displayAllUserButton;
+        [SerializeField] private Button _quitButton;
 
         [Header("All User Panel Buttons")]
         [SerializeField] private Button _returnFromUserPanelButton;
@@ -71,6 +72,7 @@ namespace UI
             _displayAllUserButton.onClick.AddListener(() => GameEventSystem.OnClickAllUserButton?.Invoke());
             _returnFromUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.AllUser));
             _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
+            _quitButton.onClick.AddListener(() => Application.Quit());
         }
 
         private void OpenPanel(PanelType type)
