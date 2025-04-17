@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Enums;
 using GameEvents;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityUtils.BaseClasses;
@@ -25,6 +26,12 @@ namespace UI
         [SerializeField] private Button _refreshUserPanelButton;
         [SerializeField] private GameObject _userLoadingPanel;
         [SerializeField] private GameObject _usersContainerPanel;
+
+        [Header("Game Panel References")]
+        [SerializeField] private GameObject _gamePanel;
+        [SerializeField] private GameObject _gameJoinServerPanel;
+        [SerializeField] private Button _joinServerButton;
+        [SerializeField] private TMP_InputField _userNameInputField;
 
         protected override void Awake()
         {
@@ -130,6 +137,8 @@ namespace UI
             _returnFromUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.AllUser));
             _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
             _quitButton.onClick.AddListener(() => Application.Quit());
+
+            _joinServerButton.onClick.AddListener(() => GameEventSystem.OnClickJoinServerButton?.Invoke(_userNameInputField.text));
         }
 
         private void OpenPanel(PanelType type)

@@ -21,6 +21,9 @@ namespace GameEvents
         // USER PANEL BUTTON EVENTS
         public static Action<PanelType> OnClickReturnMainMenuButton;
         public static Action OnClickRefreshUserPanelButton;
+
+        // GAME PANEL BUTTON EVENTS
+        public static Action<string> OnClickJoinServerButton;
         #endregion
     }
 
