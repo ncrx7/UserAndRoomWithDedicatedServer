@@ -20,6 +20,8 @@ namespace Network.ServerClient.Controller
         private SocketIOUnity socket;
         private bool isConnected = false;
 
+        [SerializeField] private Player[] _players;
+
         private void OnEnable()
         {
             GameEventSystem.OnClickJoinServerButton += JoinServerByName;
@@ -51,12 +53,15 @@ namespace Network.ServerClient.Controller
 
             var playerData = new
             {
-                name = userName
+                name = userName,
+                isReady = false
             };
 
             string json = JsonConvert.SerializeObject(playerData);
             socket.Emit("join", JsonConvert.DeserializeObject(json));
             Debug.Log("🚀 İsim gönderildi: " + json);
+
+            GameEventSystem.OnJoinServer?.Invoke();
         }
 
         public async UniTask StartSocketConnection()
@@ -95,9 +100,9 @@ namespace Network.ServerClient.Controller
 
             socket.On("updatePlayers", (SocketIOResponse response) =>
             {
-                Player[] players = response.GetValue<Player[]>();
+                _players = response.GetValue<Player[]>();
 
-                UpdatePlayerList(players);
+                UpdatePlayerList(_players);
             });
 
             await socket.ConnectAsync();

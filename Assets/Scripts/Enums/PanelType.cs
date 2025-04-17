@@ -7,6 +7,8 @@ namespace Enums
         MainMenu,
         LoadingFullScreen,
         LoadingAllUser,
-        UsersContainer
+        UsersContainer,
+        JoinPanel,
+        GameRoomPanel
     }
 }

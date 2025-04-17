@@ -30,8 +30,11 @@ namespace UI
         [Header("Game Panel References")]
         [SerializeField] private GameObject _gamePanel;
         [SerializeField] private GameObject _gameJoinServerPanel;
+        [SerializeField] private GameObject _gameRoomPanel;
         [SerializeField] private Button _joinServerButton;
         [SerializeField] private TMP_InputField _userNameInputField;
+        [SerializeField] private Button _returnFromJoinPanelButton;
+        [SerializeField] private Button _refreshServerListButton;
 
         protected override void Awake()
         {
@@ -90,6 +93,19 @@ namespace UI
                 ClosePanel(PanelType.LoadingAllUser);
                 OpenPanel(PanelType.UsersContainer);
             };
+
+            GameEventSystem.OnJoinServer += () =>
+            {
+                ClosePanel(PanelType.JoinPanel);
+                OpenPanel(PanelType.GameRoomPanel);
+            };
+
+            GameEventSystem.OnClickPlayButton += () =>
+            {
+                ClosePanel(PanelType.MainMenu);
+                OpenPanel(PanelType.Game);
+                OpenPanel(PanelType.JoinPanel);
+            };
         }
 
         private void RemoveGameEvents()
@@ -129,16 +145,33 @@ namespace UI
                 ClosePanel(PanelType.LoadingAllUser);
                 OpenPanel(PanelType.UsersContainer);
             };
+
+            GameEventSystem.OnJoinServer -= () =>
+            {
+                ClosePanel(PanelType.JoinPanel);
+                OpenPanel(PanelType.GameRoomPanel);
+            };
+
+            GameEventSystem.OnClickPlayButton -= () =>
+            {
+                ClosePanel(PanelType.MainMenu);
+                OpenPanel(PanelType.Game);
+                OpenPanel(PanelType.JoinPanel);
+            };
         }
 
         private void BindButtonEvents()
         {
+            _startGameButton.onClick.AddListener(() => GameEventSystem.OnClickPlayButton?.Invoke());
             _displayAllUserButton.onClick.AddListener(() => GameEventSystem.OnClickAllUserButton?.Invoke());
-            _returnFromUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.AllUser));
-            _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
             _quitButton.onClick.AddListener(() => Application.Quit());
 
+            _returnFromUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.AllUser));
+            _refreshUserPanelButton.onClick.AddListener(() => GameEventSystem.OnClickRefreshUserPanelButton?.Invoke());
+
             _joinServerButton.onClick.AddListener(() => GameEventSystem.OnClickJoinServerButton?.Invoke(_userNameInputField.text));
+
+            _returnFromJoinPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.Game));
         }
 
         private void OpenPanel(PanelType type)
@@ -149,7 +182,7 @@ namespace UI
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _mainMenuPanel);
                     break;
                 case PanelType.Game:
-
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _gamePanel);
                     break;
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _allUserPanel);
@@ -162,6 +195,12 @@ namespace UI
                     break;
                 case PanelType.UsersContainer:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _usersContainerPanel);
+                    break;
+                case PanelType.JoinPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _gameJoinServerPanel);
+                    break;
+                case PanelType.GameRoomPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _gameRoomPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");
@@ -177,7 +216,7 @@ namespace UI
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _mainMenuPanel);
                     break;
                 case PanelType.Game:
-
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _gamePanel);
                     break;
                 case PanelType.AllUser:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _allUserPanel);
@@ -190,6 +229,12 @@ namespace UI
                     break;
                 case PanelType.UsersContainer:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _usersContainerPanel);
+                    break;
+                case PanelType.JoinPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _gameJoinServerPanel);
+                    break;
+                case PanelType.GameRoomPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _gameRoomPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");
