@@ -16,6 +16,8 @@ namespace GameEvents
 
         public static Action OnJoinServer;
 
+        public static Action OnUpdateRoomPlayerList;
+
         public static Action OnPopulateGameRoomUserStart;
         public static Action OnPopulateGameRoomUserEnd;
 

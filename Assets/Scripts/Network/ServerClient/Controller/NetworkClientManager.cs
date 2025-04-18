@@ -39,21 +39,21 @@ namespace Network.ServerClient.Controller
         public async void JoinServerByName(string userName)
         {
             GameEventSystem.OnPopulateGameRoomUserStart?.Invoke();
-            
+
             await StartSocketConnection();
 
             await UniTask.Delay(1000);
 
             if (!isConnected)
             {
-                Debug.LogWarning("Bağlantı henüz yok.");
+                //TODO: CONNECTION ERROR UI EVENT
                 return;
             }
 
 
             if (string.IsNullOrEmpty(userName))
             {
-                Debug.LogWarning("Lütfen isim girin.");
+                //TODO: EMPTY NAME UI EVENT
                 return;
             }
 
@@ -65,8 +65,7 @@ namespace Network.ServerClient.Controller
 
             string json = JsonConvert.SerializeObject(playerData);
             socket.Emit("join", JsonConvert.DeserializeObject(json));
-            Debug.Log("🚀 İsim gönderildi: " + json);
-
+          
             GameEventSystem.OnJoinServer?.Invoke();
         }
 
@@ -106,17 +105,17 @@ namespace Network.ServerClient.Controller
 
             socket.On("updatePlayers", (SocketIOResponse response) =>
             {
-                _players = response.GetValue<Player[]>();
-
-                UpdatePlayerList(_players);
+                UpdatePlayerList(_players, response);
             });
 
             await socket.ConnectAsync();
         }
 
-        private void UpdatePlayerList(Player[] players)
+        private void UpdatePlayerList(Player[] players, SocketIOResponse response)
         {
-            
+            _players = response.GetValue<Player[]>();
+
+            GameEventSystem.OnUpdateRoomPlayerList?.Invoke();
         }
 
         private void DisconnectFromServer()

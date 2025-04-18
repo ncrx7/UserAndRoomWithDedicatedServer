@@ -17,11 +17,13 @@ namespace ScrollSystem.Controller.GameRoomPanel
         private void OnEnable()
         {
             GameEventSystem.OnJoinServer += PopulateScroller;
+            GameEventSystem.OnUpdateRoomPlayerList += PopulateScroller;
         }
 
         private void OnDisable()
         {
             GameEventSystem.OnJoinServer -= PopulateScroller;
+            GameEventSystem.OnUpdateRoomPlayerList -= PopulateScroller;
         }
 
         protected async override void PopulateScroller()
