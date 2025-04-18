@@ -8,30 +8,26 @@ using Network.ServerClient.Controller;
 using Network.ServerClient.Model;
 using ScrollSystem.View.GameRoomPanel;
 using UnityEngine;
+using Utils.BaseClasses;
 
 namespace ScrollSystem.Controller.GameRoomPanel
 {
-    public class GameRoomPanelScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
+    public class GameRoomPanelScrollerController : BaseScrollController<Player>
     {
-        [Header("References")]
-        public EnhancedScroller myScroller;
-        public RoomPlayerCellView userCellViewPrefab;
-        [SerializeField] private float _cellViewSize;
-
-        [SerializeField] private List<Player> _userData;
-
         private void OnEnable()
         {
-            GameEventSystem.OnJoinServer += PopulateGameRoomUserScroll;
+            GameEventSystem.OnJoinServer += PopulateScroller;
         }
 
         private void OnDisable()
         {
-            GameEventSystem.OnJoinServer -= PopulateGameRoomUserScroll;
+            GameEventSystem.OnJoinServer -= PopulateScroller;
         }
 
-        private async void PopulateGameRoomUserScroll()
+        protected async override void PopulateScroller()
         {
+            base.PopulateScroller();
+
             await UniTask.WaitUntil(() => NetworkClientManager.Instance.GetPlayers.Length != 0);
 
             _userData = NetworkClientManager.Instance.GetPlayers.ToList();
@@ -42,21 +38,33 @@ namespace ScrollSystem.Controller.GameRoomPanel
             GameEventSystem.OnPopulateGameRoomUserEnd?.Invoke();
         }
 
-        public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
-        {
-            RoomPlayerCellView cellView = scroller.GetCellView(userCellViewPrefab) as RoomPlayerCellView;
-            cellView.SetData(_userData[dataIndex]);
-            return cellView;
-        }
+        /*         private async void PopulateGameRoomUserScroll()
+                {
+                    await UniTask.WaitUntil(() => NetworkClientManager.Instance.GetPlayers.Length != 0);
 
-        public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
-        {
-            return _cellViewSize;
-        }
+                    _userData = NetworkClientManager.Instance.GetPlayers.ToList();
 
-        public int GetNumberOfCells(EnhancedScroller scroller)
-        {
-            return _userData.Count;
-        }
+                    myScroller.Delegate = this;
+                    myScroller.ReloadData();
+
+                    GameEventSystem.OnPopulateGameRoomUserEnd?.Invoke();
+                }
+
+                public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
+                {
+                    RoomPlayerCellView cellView = scroller.GetCellView(userCellViewPrefab) as RoomPlayerCellView;
+                    cellView.SetData(_userData[dataIndex]);
+                    return cellView;
+                }
+
+                public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
+                {
+                    return _cellViewSize;
+                }
+
+                public int GetNumberOfCells(EnhancedScroller scroller)
+                {
+                    return _userData.Count;
+                } */
     }
 }

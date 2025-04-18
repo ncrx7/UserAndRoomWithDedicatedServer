@@ -4,15 +4,16 @@ using EnhancedUI.EnhancedScroller;
 using Network.ServerClient.Model;
 using TMPro;
 using UnityEngine;
+using Utils.BaseClasses;
 
 namespace ScrollSystem.View.GameRoomPanel
 {
-    public class RoomPlayerCellView : EnhancedScrollerCellView
+    public class RoomPlayerCellView : BaseScrollCellView<Player>
     {
         public TextMeshProUGUI userNameText;
         public TextMeshProUGUI isReadyText;
 
-        public void SetData(Player data)
+        public override void SetData(Player data)
         {
             userNameText.text = data.name;
             isReadyText.text = data.isReady.ToString();
