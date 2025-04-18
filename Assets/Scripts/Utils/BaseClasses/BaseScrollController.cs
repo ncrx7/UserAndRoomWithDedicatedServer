@@ -7,6 +7,7 @@ namespace Utils.BaseClasses
 {
     /// <summary>
     /// I have created a base scroll controller to create scroll list elements faster like game room list or etc.
+    /// Thanks to this, I have provided No Code repetition and scalable SOLID PRINCIPIPLES
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class BaseScrollController<T> : MonoBehaviour, IEnhancedScrollerDelegate

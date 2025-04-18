@@ -11,36 +11,32 @@ using GameEvents;
 using ScrollSystem.Model;
 using ScrollSystem.View;
 using UnityEngine;
+using Utils.BaseClasses;
 
 namespace ScrollSystem.Controller
 {
-    public class AllUserPanelScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
+    public class AllUserPanelScrollerController : BaseScrollController<UserScrollerData>
     {
-        [Header("References")]
-        public EnhancedScroller myScroller;
-        public UserCellView userCellViewPrefab;
-
         [Header("Variable")]
         [SerializeField] private string _url;
-        [SerializeField] private float _cellViewSize;
-
-        private List<UserScrollerData> _userData;
-
+          
         private void OnEnable()
         {
-            GameEventSystem.OnDisplayAllUserPanel += PopulateAllUserPanel;
-            GameEventSystem.OnClickRefreshUserPanelButton += PopulateAllUserPanel;
+            GameEventSystem.OnDisplayAllUserPanel += PopulateScroller;
+            GameEventSystem.OnClickRefreshUserPanelButton += PopulateScroller;
         }
 
         private void OnDisable()
         {
-            GameEventSystem.OnDisplayAllUserPanel -= PopulateAllUserPanel;
-            GameEventSystem.OnClickRefreshUserPanelButton -= PopulateAllUserPanel;
+            GameEventSystem.OnDisplayAllUserPanel -= PopulateScroller;
+            GameEventSystem.OnClickRefreshUserPanelButton -= PopulateScroller;
         }
 
-        private async void PopulateAllUserPanel()
+        protected async override void PopulateScroller()
         {
             GameEventSystem.OnAllUserDataLoadingStart?.Invoke();
+
+            base.PopulateScroller();
 
             await UniTask.Delay(700); //I am waited in purpose, because I want to display user loading panel longer
 
@@ -63,24 +59,6 @@ namespace ScrollSystem.Controller
             myScroller.ReloadData();
 
             GameEventSystem.OnAllUserDataLoadingEnd?.Invoke();
-        }
-
-
-        public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
-        {
-            UserCellView cellView = scroller.GetCellView(userCellViewPrefab) as UserCellView;
-            cellView.SetData(_userData[dataIndex]);
-            return cellView;
-        }
-
-        public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
-        {
-            return _cellViewSize;
-        }
-
-        public int GetNumberOfCells(EnhancedScroller scroller)
-        {
-            return _userData.Count;
         }
 
         /// <summary>

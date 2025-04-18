@@ -15,6 +15,8 @@ namespace ScrollSystem.View.GameRoomPanel
 
         public override void SetData(Player data)
         {
+            base.SetData(data);
+            
             userNameText.text = data.name;
             isReadyText.text = data.isReady.ToString();
         }
