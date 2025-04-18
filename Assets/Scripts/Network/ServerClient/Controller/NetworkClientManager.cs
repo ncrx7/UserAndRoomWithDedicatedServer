@@ -19,6 +19,7 @@ namespace Network.ServerClient.Controller
 
         private SocketIOUnity socket;
         private bool isConnected = false;
+        private bool _gameCanStart = false;
 
         [SerializeField] private Player[] _players;
 
@@ -110,6 +111,15 @@ namespace Network.ServerClient.Controller
                 UpdatePlayerList(_players, response);
             });
 
+            socket.On("gameCanStart", (_) =>
+            {
+                Debug.Log("All plyer are readt yo play. Game can start right now.");
+                _gameCanStart = true;
+
+                GameEventSystem.OnAllPlayerReady?.Invoke();
+            });
+
+
             await socket.ConnectAsync();
         }
 
@@ -134,12 +144,13 @@ namespace Network.ServerClient.Controller
 
             var data = new
             {
-                id = socket.Id, 
+                id = socket.Id,
                 ready = true
             };
 
             string json = JsonConvert.SerializeObject(data);
             socket.Emit("playerReady", JsonConvert.DeserializeObject(json));
+
         }
     }
 }

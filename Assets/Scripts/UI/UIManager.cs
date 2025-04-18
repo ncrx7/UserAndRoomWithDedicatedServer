@@ -17,7 +17,7 @@ namespace UI
         [SerializeField] private GameObject _allUserPanel;
 
         [Header("Main Menu References")]
-        [SerializeField] private Button _startGameButton;
+        [SerializeField] private Button _playGameButton;
         [SerializeField] private Button _displayAllUserButton;
         [SerializeField] private Button _quitButton;
 
@@ -38,6 +38,7 @@ namespace UI
         [SerializeField] private Button _returnFromGameRoomPanelButton;
         [SerializeField] private GameObject _gameJoinLoadingPanel;
         [SerializeField] private Button _readyButton;
+        [SerializeField] private Button _startGameButton;
 
         protected override void Awake()
         {
@@ -119,6 +120,11 @@ namespace UI
             {
                 ClosePanel(PanelType.JoinLoadingPanel);
             };
+
+            GameEventSystem.OnAllPlayerReady += () =>
+            {
+                _startGameButton.interactable = true;
+            };
         }
 
         private void RemoveGameEvents()
@@ -181,11 +187,16 @@ namespace UI
             {
                 ClosePanel(PanelType.JoinLoadingPanel);
             };
+
+            GameEventSystem.OnAllPlayerReady -= () =>
+            {
+                _startGameButton.interactable = true;
+            };
         }
 
         private void BindButtonEvents()
         {
-            _startGameButton.onClick.AddListener(() => GameEventSystem.OnClickPlayButton?.Invoke());
+            _playGameButton.onClick.AddListener(() => GameEventSystem.OnClickPlayButton?.Invoke());
             _displayAllUserButton.onClick.AddListener(() => GameEventSystem.OnClickAllUserButton?.Invoke());
             _quitButton.onClick.AddListener(() => Application.Quit());
 
@@ -198,6 +209,7 @@ namespace UI
             _returnFromGameRoomPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.GameRoomPanel));
 
             _readyButton.onClick.AddListener(() => GameEventSystem.OnClickReadyButton?.Invoke());
+            _startGameButton.onClick.AddListener(() => Debug.Log("THE GAME HAS STARTED"));
         }
 
         private void OpenPanel(PanelType type)
