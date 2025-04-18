@@ -36,6 +36,7 @@ namespace UI
         [SerializeField] private Button _returnFromJoinPanelButton;
         [SerializeField] private Button _refreshServerListButton;
         [SerializeField] private Button _returnFromGameRoomPanelButton;
+        [SerializeField] private GameObject _gameJoinLoadingPanel;
 
         protected override void Awake()
         {
@@ -107,6 +108,16 @@ namespace UI
                 OpenPanel(PanelType.Game);
                 OpenPanel(PanelType.JoinPanel);
             };
+
+            GameEventSystem.OnPopulateGameRoomUserStart += () =>
+            {
+                OpenPanel(PanelType.JoinLoadingPanel);
+            };
+
+            GameEventSystem.OnPopulateGameRoomUserEnd += () =>
+            {
+                ClosePanel(PanelType.JoinLoadingPanel);
+            };
         }
 
         private void RemoveGameEvents()
@@ -159,6 +170,16 @@ namespace UI
                 OpenPanel(PanelType.Game);
                 OpenPanel(PanelType.JoinPanel);
             };
+
+            GameEventSystem.OnPopulateGameRoomUserStart -= () =>
+            {
+                OpenPanel(PanelType.JoinLoadingPanel);
+            };
+
+            GameEventSystem.OnPopulateGameRoomUserEnd -= () =>
+            {
+                ClosePanel(PanelType.JoinLoadingPanel);
+            };
         }
 
         private void BindButtonEvents()
@@ -204,6 +225,9 @@ namespace UI
                 case PanelType.GameRoomPanel:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _gameRoomPanel);
                     break;
+                case PanelType.JoinLoadingPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, true, _gameJoinLoadingPanel);
+                    break;
                 default:
                     Debug.LogError("Undefined panel type!");
                     break;
@@ -237,6 +261,9 @@ namespace UI
                     break;
                 case PanelType.GameRoomPanel:
                     ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _gameRoomPanel);
+                    break;
+                case PanelType.JoinLoadingPanel:
+                    ExecuteUIAction<bool, GameObject>(UIActionType.SetPanelDisplay, false, _gameJoinLoadingPanel);
                     break;
                 default:
                     Debug.LogError("Undefined panel type!");

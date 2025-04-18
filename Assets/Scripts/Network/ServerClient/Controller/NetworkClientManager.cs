@@ -38,6 +38,8 @@ namespace Network.ServerClient.Controller
 
         public async void JoinServerByName(string userName)
         {
+            GameEventSystem.OnPopulateGameRoomUserStart?.Invoke();
+            
             await StartSocketConnection();
 
             await UniTask.Delay(1000);

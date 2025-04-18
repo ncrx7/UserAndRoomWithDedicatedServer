@@ -9,6 +9,7 @@ namespace Enums
         LoadingAllUser,
         UsersContainer,
         JoinPanel,
-        GameRoomPanel
+        GameRoomPanel,
+        JoinLoadingPanel
     }
 }

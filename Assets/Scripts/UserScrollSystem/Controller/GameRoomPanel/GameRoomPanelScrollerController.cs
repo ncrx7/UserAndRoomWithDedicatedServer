@@ -38,6 +38,8 @@ namespace ScrollSystem.Controller.GameRoomPanel
 
             myScroller.Delegate = this;
             myScroller.ReloadData();
+
+            GameEventSystem.OnPopulateGameRoomUserEnd?.Invoke();
         }
 
         public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)

@@ -16,6 +16,9 @@ namespace GameEvents
 
         public static Action OnJoinServer;
 
+        public static Action OnPopulateGameRoomUserStart;
+        public static Action OnPopulateGameRoomUserEnd;
+
         #region Button Events
         // MAIN MENU PANEL BUTTON EVENTS
         public static Action OnClickPlayButton;

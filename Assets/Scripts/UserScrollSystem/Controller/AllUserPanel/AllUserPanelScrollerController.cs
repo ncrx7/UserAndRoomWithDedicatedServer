@@ -42,7 +42,7 @@ namespace ScrollSystem.Controller
         {
             GameEventSystem.OnAllUserDataLoadingStart?.Invoke();
 
-            await UniTask.Delay(700); //I am waited in purpose, because I want to display user loading panel
+            await UniTask.Delay(700); //I am waited in purpose, because I want to display user loading panel longer
 
             ApiResult<List<UserScrollerData>> responseResult = await ApiHandler.GetApiResponse<List<UserScrollerData>>(_url, ParseUserScrollerList);
 
