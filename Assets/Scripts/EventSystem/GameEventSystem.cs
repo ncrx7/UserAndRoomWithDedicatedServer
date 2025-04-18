@@ -33,6 +33,7 @@ namespace GameEvents
 
         // GAME PANEL BUTTON EVENTS
         public static Action<string> OnClickJoinServerButton;
+        public static Action OnClickReadyButton;
         #endregion
     }
 

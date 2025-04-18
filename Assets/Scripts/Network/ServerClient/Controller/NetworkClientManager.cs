@@ -16,7 +16,7 @@ namespace Network.ServerClient.Controller
     public class NetworkClientManager : SingletonBehavior<NetworkClientManager>
     {
         public string serverUrl = "http://localhost:3000";
- 
+
         private SocketIOUnity socket;
         private bool isConnected = false;
 
@@ -28,12 +28,14 @@ namespace Network.ServerClient.Controller
         {
             GameEventSystem.OnClickJoinServerButton += JoinServerByName;
             GameEventSystem.OnClickReturnMainMenuButton += (args) => DisconnectFromServer();
+            GameEventSystem.OnClickReadyButton += SetPlayerReady;
         }
 
         private void OnDisable()
         {
             GameEventSystem.OnClickJoinServerButton -= JoinServerByName;
             GameEventSystem.OnClickReturnMainMenuButton -= (args) => DisconnectFromServer();
+            GameEventSystem.OnClickReadyButton -= SetPlayerReady;
         }
 
         public async void JoinServerByName(string userName)
@@ -65,7 +67,7 @@ namespace Network.ServerClient.Controller
 
             string json = JsonConvert.SerializeObject(playerData);
             socket.Emit("join", JsonConvert.DeserializeObject(json));
-          
+
             GameEventSystem.OnJoinServer?.Invoke();
         }
 
@@ -122,8 +124,22 @@ namespace Network.ServerClient.Controller
         {
             if (!isConnected)
                 return;
-            
+
             socket.Disconnect();
+        }
+
+        public void SetPlayerReady()
+        {
+            if (!isConnected || socket == null) return;
+
+            var data = new
+            {
+                id = socket.Id, 
+                ready = true
+            };
+
+            string json = JsonConvert.SerializeObject(data);
+            socket.Emit("playerReady", JsonConvert.DeserializeObject(json));
         }
     }
 }

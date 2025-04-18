@@ -37,6 +37,7 @@ namespace UI
         [SerializeField] private Button _refreshServerListButton;
         [SerializeField] private Button _returnFromGameRoomPanelButton;
         [SerializeField] private GameObject _gameJoinLoadingPanel;
+        [SerializeField] private Button _readyButton;
 
         protected override void Awake()
         {
@@ -195,6 +196,8 @@ namespace UI
             _returnFromJoinPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.Game));
 
             _returnFromGameRoomPanelButton.onClick.AddListener(() => GameEventSystem.OnClickReturnMainMenuButton?.Invoke(PanelType.GameRoomPanel));
+
+            _readyButton.onClick.AddListener(() => GameEventSystem.OnClickReadyButton?.Invoke());
         }
 
         private void OpenPanel(PanelType type)
